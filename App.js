@@ -26,35 +26,31 @@ export default function App() {
   
 
  /**--------------------------End push notification test ----------------- */
-
-  useEffect(()=> {
-
-
-    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
-
-    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-      setNotification(notification);
-      console.log(notification);
-     
-    });
-
-    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-
-      setNotification(response.notification)
-      console.log(response);
-      
-
-    });
-
-    return () => {
-      Notifications.removeNotificationSubscription(notificationListener.current);
-      Notifications.removeNotificationSubscription(responseListener.current);
-
-    };
-
-  },[])
+ useEffect(() => {
 
 
+  registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+
+  notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+    setNotification(notification);
+    console.log(notification+"notificationListener");
+
+  });
+
+  responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+    console.log(response+"responseListener");
+  });
+
+
+});
+
+
+  useEffect(()=>{
+
+    schedulePushNotification()
+
+
+  })
   useEffect(() => {
 
     setTimeout(() => {
@@ -65,8 +61,8 @@ export default function App() {
 
    // ...
 
-   handlerSystemNotification()
-   handlerSolutionotification()
+   //handlerSystemNotification()
+   //handlerSolutionotification()
 
   }, []);
 
