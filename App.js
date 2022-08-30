@@ -73,7 +73,7 @@ export default function App() {
 
   /** --------------------------- Start getting plants data  ------------------------------**/
 
-
+//...
 
 
 /** --------------------------- End getting plants data  ------------------------------**/
@@ -88,10 +88,10 @@ export default function App() {
 
       calledSoltionNotification.current = true
       schedulePushNotification()
-      sendSMS()
      
       return () => {
-      
+        Notifications.removeNotificationSubscription(notificationListener.current);
+        Notifications.removeNotificationSubscription(responseListener.current);
   
       };
 
@@ -115,7 +115,8 @@ export default function App() {
       called.current = true
 
       return () => {
-        
+        Notifications.removeNotificationSubscription(notificationListener.current);
+        Notifications.removeNotificationSubscription(responseListener.current);
   
       };
       
