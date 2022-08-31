@@ -42,7 +42,7 @@ export default function App() {
   });
 
 
-});
+},[]);
 
 
   useEffect(()=>{
@@ -61,8 +61,8 @@ export default function App() {
 
    // ...
 
-   //handlerSystemNotification()
-   //handlerSolutionotification()
+   handlerSystemNotification()
+   handlerSolutionotification()
 
   }, []);
 
