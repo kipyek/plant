@@ -2,9 +2,10 @@ import React, { useState, useRef, useEffect } from 'react'
 //...
 import * as Notifications from 'expo-notifications'
 
-import { registerForPushNotificationsAsync,
-         schedulePushNotification,
-         scheduleSolutionPushNotification
+import {
+  registerForPushNotificationsAsync,
+  schedulePushNotification,
+  scheduleSolutionPushNotification
 } from './src/services/push_notification'
 
 const Drawer = createDrawerNavigator()
@@ -23,116 +24,132 @@ export default function App() {
   const responseListener = useRef();
 
 
-  
 
- /**--------------------------End push notification test ----------------- */
 
-  useEffect(()=> {
+  /**--------------------------End push notification test ----------------- */
+  useEffect(() => {
 
 
     registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
 
     notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
       setNotification(notification);
-      console.log(notification);
-     
+      console.log(notification + "notificationListener");
+
     });
 
     responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-
-      setNotification(response.notification)
-      console.log(response);
-      
-
+      console.log(response + "responseListener");
     });
 
-    return () => {
-      Notifications.removeNotificationSubscription(notificationListener.current);
-      Notifications.removeNotificationSubscription(responseListener.current);
 
-    };
-
-  },[])
-
+  }, []);
 
   useEffect(() => {
 
     setTimeout(() => {
       setCurrentScreen("StartScreen");
     }, 5000)
-   
-  
 
-   // ...
 
-   handlerSystemNotification()
-   handlerSolutionotification()
+
+    // ...
+
+    handlerSystemNotification()
+    handlerSolutionotification()
 
   }, []);
 
 
   /** --------------------------- Start getting plants data  ------------------------------**/
 
-//...
+  //...
 
 
-/** --------------------------- End getting plants data  ------------------------------**/
+  /** --------------------------- End getting plants data  ------------------------------**/
 
 
 
- 
-    function handlerSystemNotification() {
+
+  function handlerSystemNotification() {
 
 
-    if (!calledSoltionNotification.current && systemState == 'Auto' &&  solutionPump == 0) {
+    if (!calledSoltionNotification.current && systemState == 'Auto' && solutionPump == 0) {
 
       calledSoltionNotification.current = true
-      schedulePushNotification()
-     
+
+      Notifications.scheduleNotificationAsync({
+        content: {
+
+          title: "⚠️ Avertissement",
+          body: 'Warning!! Vérifier l\'état de la pompe solution',
+          data: { data: 'goes here' },
+          sound: 'default',
+          vibrate: false,
+          priority: 'high',
+        },
+        trigger: { seconds: 3 },
+
+      });
+      //schedulePushNotification()
+
       return () => {
         Notifications.removeNotificationSubscription(notificationListener.current);
         Notifications.removeNotificationSubscription(responseListener.current);
-  
+
       };
 
     }
-    if(calledSoltionNotification.current == "true" && solutionPump != 0) {
+    if (calledSoltionNotification.current == "true" && solutionPump != 0) {
 
       calledSoltionNotification.current = false
 
-   
-     }
-   
+
+    }
+
 
   }
 
   function handlerSolutionotification() {
- 
+
 
     if (!called.current && waterLevel <= 50) {
 
-      scheduleSolutionPushNotification()
+      Notifications.scheduleNotificationAsync({
+        content: {
+
+          title: "🔔 Alerte",
+          body: 'Le niveau d\'eau est bas, pouvez-vous vérifier votre système',
+          data: { data: 'goes here' },
+          sound: 'default',
+          vibrate: false,
+          priority: 'high',
+        },
+        trigger: { seconds: 3 },
+
+      });
+      //scheduleSolutionPushNotification()
       called.current = true
 
       return () => {
         Notifications.removeNotificationSubscription(notificationListener.current);
         Notifications.removeNotificationSubscription(responseListener.current);
-  
+
       };
-      
-    } if(called.current == "true" && waterLevel >= 50) {
-     
+
+    } if (called.current == "true" && waterLevel >= 50) {
+
       called.current = false
     }
-  }  
- 
- 
+  }
+
+
   return (
-  
-      
-         <>
-         
-         </>
+
+
+    <>
+
+    </>
 
   )
 
