@@ -44,13 +44,6 @@ export default function App() {
 
 },[]);
 
-
-  useEffect(()=>{
-
-    schedulePushNotification()
-
-
-  })
   useEffect(() => {
 
     setTimeout(() => {
