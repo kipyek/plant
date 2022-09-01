@@ -25,6 +25,7 @@ export default function App() {
 
 
 
+<<<<<<< HEAD
 
   /**--------------------------End push notification test ----------------- */
   useEffect(() => {
